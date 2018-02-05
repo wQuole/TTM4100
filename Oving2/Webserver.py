@@ -4,11 +4,12 @@ from socket import *
 # Create a TCP server socket
 # (AF_INET is used for IPv4 protocols)
 # (SOCK_STREAM is used for TCP)
+# Prepare a server socket
 serverSocket = socket(AF_INET, SOCK_STREAM)
 
-# Prepare a server socket
 # Assign a port number
 serverPort = 12000
+
 # Bind the socket to server address and server port
 serverSocket.bind(('',serverPort))
 
@@ -18,24 +19,17 @@ serverSocket.listen(1)
 # Server should be up and running and listening to the incoming connections
 while True:
 	print('Ready to serve...')
-
 	# Set up a new connection from the client
 	connectionSocket, addr = serverSocket.accept()
 
-	# If an exception occurs during the execution of try clause
-	# the rest of the clause is skipped
-	# If the exception type matches the word after except
-	# the except clause is executedw
 	try:
 		# Receives the request message from the client
 		message = connectionSocket.recv(1024)
 
-		# Extract the path of the requested object from the message
-		# The path is the second part of HTTP header, identified by [1]
+		# Setting up filepath, which is the second part of the HTTP header
 		filepath = message.split()[1]
 
-		# Because the extracted path of the HTTP request includes
-		# a character '\', we read the path from the second character
+		# Open from second character since first char is '\' in HTTP req
 		f = open(filepath[1:])
 
 		# Read the file "f" and store the entire content of the requested file in a temporary buffer
@@ -43,7 +37,6 @@ while True:
 		print(outputdata)
 
 		# Send the HTTP response header line to the connection socket
-		# Format: "HTTP/1.1 *code-for-successful-request*\r\n\r\n"
 		connectionSocket.send(b"HTTP/1.1 200 OK\r\n\r\n")
 
 		# Send the content of the requested file to the connection socket
@@ -56,15 +49,12 @@ while True:
 
 	except IOError:
 		# Send HTTP response message for file not found
-		# Same format as above, but with code for "Not Found" (see outputdata variable)
 		connectionSocket.send(b"HTTP/1.1 404 NOT FOUND\r\n\r\n")
-		# FILL IN START
 
-		# FILL IN END
-		connectionSocket.send(b"<html><head></head><body><h1>404 Not Found</h1></body></html>\r\n")
+		# What the page will actually display
+		connectionSocket.send(b"<html><head></head><body><h1>404 ERROR Not Found!!!!!!!!!!!!</h1></body></html>\r\n")
 
-		# Close the client connection socket
-		connectionSocket.close()
-
+# Close the client connection socket (is not reached in this implementation
+# due to while looping over True...
 serverSocket.close()
 
