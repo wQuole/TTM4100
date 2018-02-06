@@ -3,7 +3,7 @@
 
 Running from terminal:
 ```
-python "UDPClient.py" <SERVER IP-ADDRESS> <PORT>
+python "UDPPingerClient.py" <SERVER IP-ADDRESS> <PORT>
 ```
 
   - Run on your own computer:
