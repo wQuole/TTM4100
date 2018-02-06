@@ -1,4 +1,3 @@
-![NTNU logo](https://qore.no/res/ntnu-logo-100.png)
 # UDPClient and -Server
 
 
